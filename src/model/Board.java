@@ -1,13 +1,13 @@
 package model;
 
 public class Board {
-	private int row;
-	private int column;
-	private int snakes;
-	private int ladders;
-	private boolean direction;
-	private Square firstSquare;
-	private Player players;
+	private int rows; //n filas
+	private int columns;//m columnas
+	private int snakes;//s serpientes
+	private int ladders;//e escaleras
+	private boolean direction;//Es la direccion en la que esta yendo un jugador. Puede ser izquierda o derecha
+	private Square firstSquare;//Es el primer cuadro del tablero
+	private Player firstPlayer;//Son los jugadores del juego
 	
 	//Hacer metodo que lee la cadena en donde se le dice el tamano del tablero y el numero de e y s.
 		//Hacer metodo que genere el tablero con el tamano especificado.(Hecho)
@@ -24,10 +24,11 @@ public class Board {
 		//Hacer metodo que valide si se escribio "menu".
 		//
 	
-	public Board(int r, int col, int ladders) {
-		row=r;
-		column=col;
-		this.ladders=ladders;
+	public Board(int rows, int columns, int snakes, int ladders) {
+		this.rows = rows;
+		this.columns = columns;
+		this.snakes = snakes;
+		this.ladders = ladders;
 		createBoard();
 	}
 	
@@ -43,7 +44,7 @@ public class Board {
 	private void createRow(int i, int j, Square first) {
 		System.out.println("Create row fila"+i);
 		createCol(i,j+1, first, first.getUp());
-		if(i+1<row) {
+		if(i+1<rows) {
 			Square currentDown=new Square(i+1,j);
 			currentDown.setxPosition(i+1);
 			currentDown.setyPosition(j);
@@ -55,7 +56,7 @@ public class Board {
 	}
 	
 	private void createCol(int i, int j,Square first, Square prevRow) {
-		if(j<column) {
+		if(j<columns) {
 			System.out.println("     create col con la columna"+j);
 			Square current= new Square(i,j);
 			current.setxPosition(i);
@@ -104,13 +105,13 @@ public class Board {
 	private void setLadders(int ladders) {
 		int min=1;
 		if((ladders)>min) {
-		int random=(int)((int) 0 + (Math.random() * row-1));  
-		int random2=(int)((int) 0 + (Math.random() * column));
-		if((random==row)&&random2==0) {
+		int random=(int)((int) 0 + (Math.random() * rows-1));  
+		int random2=(int)((int) 0 + (Math.random() * columns));
+		if((random==rows)&&random2==0) {
 			random2=1;
 		}
-		if((random==0)&&random2==column) {
-			random2=column-1;
+		if((random==0)&&random2==columns) {
+			random2=columns-1;
 		}
 		
 		setLadders(ladders-1);
@@ -141,6 +142,27 @@ public class Board {
 		}
 		getNode2(x,y,firstSquare.getDown());
 	return firstSquare;
-}
+	}
+	
+	public void createPlayers(String symbol) {
+		// Los simbolos que se pueden usar son: * ! O X % $ # + &.
+		
+		Player newPlayer = new Player(symbol);
+		
+		if(firstPlayer == null) {
+			firstPlayer = newPlayer;
+		}else {
+			createPlayers(firstPlayer,newPlayer);
+		}
+	}
+	
+	private void createPlayers(Player current, Player newPlayer) {
+		if(current.getNext() == null) {
+			current.setNext(newPlayer);
+		}else {
+			current = current.getNext();
+			createPlayers(current,newPlayer);
+		}
+	}
 	
 }
