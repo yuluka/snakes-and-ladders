@@ -11,13 +11,20 @@ public class Square {
 	private int row;
 	private int column;
 	
-	private boolean ocupated; //Para validar si la casilla ya tiene una s o e.
-	
+	private boolean occupatedSnake; //Para validar si la casilla ya tiene una s o e.
+	private boolean occupatedLadder;
+	private boolean lower;
+	private boolean upper;
+	private int code;
 	public Square(int m, int n) {
 		row=m;
 		column=n;
 		xPosition=0;
 		yPosition=0;
+		occupatedSnake=false;
+		occupatedLadder=false;
+		lower=false;
+		upper=false;
 		
 	}
 	public String getInfo() {
@@ -51,24 +58,49 @@ public class Square {
 		return down;
 	}
 
-	public int getxPosition() {
+	public int getXPosition() {
 		return xPosition;
 	}
 
-	public int getyPosition() {
+	public int getYPosition() {
 		return yPosition;
 	}
 	
-	public boolean isOcupated() {
-		return ocupated;
+	public boolean getUpperOrLower() {
+		if(upper=true) {
+			return upper;
+		}
+		else {
+			return lower;
+		}
+	}
+	
+	public boolean isOccupatedSnakes() {
+		return occupatedSnake;
+	}
+	
+	public boolean isOccupatedLadder() {
+		return occupatedLadder;
 	}
 
+	public void setTrueUpper() {
+		upper=true;
+	}
+	
+	public void setTrueLower() {
+		lower=true;
+	}
+	
 	public void setyPosition(int yPosition) {
 		this.yPosition = yPosition;
 	}
 
-	public void setOcupated(boolean ocupated) {
-		this.ocupated = ocupated;
+	public void setOcupatedSnakes() {
+		occupatedSnake=true;
+	}
+	
+	public void setOcupatedLadder() {
+		occupatedLadder=true;
 	}
 	
 	public void setDown(Square down) {
