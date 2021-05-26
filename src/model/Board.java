@@ -148,6 +148,7 @@ public class Board {
 	//Set the lower ladder
 	public void setLowerLadder() {
 		int number=getRandomNumber();
+		int number2=getRandomNumberUpper(number);
 		if(near(findSquare(number,top), occupated)){
 			setLowerLadder();	
 		}
@@ -157,7 +158,7 @@ public class Board {
 		}
 	
 	}
-	
+	//It's used for take a look at the right and left position of the square, noticing if there are a snake or a ladder next to the local Square
 	public boolean near(Square a, Occupated o) {
 		if(o!=null) {
 		if(a.getPosition()-1==(o.getValue())||(a.getPosition()+1==(o.getValue()))) {
@@ -192,7 +193,7 @@ public class Board {
 		}
 	}
 
-
+// IN this method you search a square by using It´s position
 	public Square find2(Square rTop,int number) {
 		if(rTop.getNext()==null) {
 			if(rTop.getPosition()==number) {
@@ -213,11 +214,34 @@ public class Board {
 		}
 	}
 	
-	
-	public int getRandomNumber() {
-		int min=1;
+	//Generate a random number for the ladders
+	public int getRandomNumberUpper(int limit) {
+		int min=getNextNumber(limit);
 		int random=0;
 		random=(int)(min + (Math.random() * (rows*columns)));
+		random=place(random);
+		return random;
+	}
+	
+	
+	
+	public int getNextNumber(int start) {
+		int number=(findSquare(start,top).getXPosition());
+		int temp=0;
+		if((number+1)%2==0) {
+			temp=order(0,number+1);
+			return temp;
+		}
+		else {
+			temp=order(columns,number+1);
+			return temp;
+		}
+	}
+	
+	public int getRandomNumber() {
+		int min=2;
+		int random=0;
+		random=(int)(min + (Math.random() * ((rows*columns)-columns-1)));
 		random=place(random);
 		return random;
 	}
