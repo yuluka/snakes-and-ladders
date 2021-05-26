@@ -7,7 +7,10 @@ public class Board {
 	private int ladders;//e escaleras
 	private boolean direction;//Es la direccion en la que esta yendo un jugador. Puede ser izquierda o derecha
 	private Square firstSquare;//Es el primer cuadro del tablero
+	private Square top;
+	private Occupated occupated;
 	private Player firstPlayer;//Son los jugadores del juego
+	
 	
 	//Hacer metodo que lee la cadena en donde se le dice el tamano del tablero y el numero de e y s.
 		//Hacer metodo que genere el tablero con el tamano especificado.(Hecho)
@@ -33,17 +36,18 @@ public class Board {
 	}
 	
 	private void createBoard() {
-		System.out.println("matriz");
+		//System.out.println("matriz");
+		occupated.setValue(1);
 		firstSquare= new Square(0,0);
 		firstSquare.setxPosition(0);
 		firstSquare.setyPosition(0);
 		firstSquare.setPosition(1);
-		System.out.println("Se crea el first");
+		//System.out.println("Se crea el first");
 		createRow(0,0, firstSquare);
 	}
 	
 	private void createRow(int i, int j, Square first) {
-		System.out.println("Create row fila"+i);
+		//System.out.println("Create row fila"+i);
 		createCol(i,j+1, first, first.getUp());
 		if(i+1<rows) {
 			Square currentUp=new Square(i+1,j);
@@ -60,14 +64,13 @@ public class Board {
 	
 	private void createCol(int i, int j,Square first, Square prevRow) {
 		if(j<columns) {
-			System.out.println("     create col con la columna"+j);
+			//System.out.println("     create col con la columna"+j);
 			Square current= new Square(i,j);
 			current.setxPosition(i);
 			current.setyPosition(j);
 			current.setPosition(order(j,i));
 			current.setPrev(first);
 			first.setNext(current);
-			
 			if(prevRow!=null) {
 				Square temp=prevRow.getNext();
 				current.setUp(temp);
@@ -81,15 +84,18 @@ public class Board {
 	
 	public String getBoard() {
 		String msg;
-		msg= boardRow(firstSquare);
+		getTop(firstSquare);
+		msg= boardRow(top);
 		return msg;
 	}
 	
-	public String boardRow(Square rowFirst) {
+	
+	public String boardRow(Square topS) {
 		String msg="";
-		if(rowFirst!=null) {
-			msg= boardCol(rowFirst)+"\n";
-			msg+= boardRow(rowFirst.getUp());
+		if(topS!=null) {
+			msg= boardCol(topS)+"\n";
+			msg+= boardRow(topS.getDown());
+			boardRow(topS.getDown());
 		}
 		return msg;
 	}
@@ -101,6 +107,16 @@ public class Board {
 			msg+=boardCol(current.getNext());
 		}
 		return msg;
+	}
+	
+	public void getTop(Square firstSquare) {
+		if(firstSquare.getUp()==null) {
+			top=firstSquare;
+		}
+		else {
+			getTop(firstSquare.getUp());
+		}
+		
 	}
 	
 	public int order(int j,int i) {
@@ -120,7 +136,7 @@ public class Board {
 	
 	private void setLadders(int ladders) {
 		int min=1;
-		if((ladders)>min) {
+		if((ladders)>=min) {
 		int random=(int)((int) 0 + (Math.random() * rows-1));  
 		int random2=(int)((int) 0 + (Math.random() * columns));
 		if((random==rows)&&random2==0) {

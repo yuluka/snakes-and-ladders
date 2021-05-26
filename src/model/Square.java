@@ -30,7 +30,16 @@ public class Square {
 		
 	}
 	public String getInfo() {
-		String info="["+position+"]";
+		String info="";
+		if(position<=9) {
+			info="["+position+"   "+"]";
+		}
+		else if(position<=99){
+			info="["+position+"  "+"]";
+		}
+		else {
+			info="["+position+" "+"]";
+		}
 		return info;
 	}
 	
