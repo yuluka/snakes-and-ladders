@@ -37,6 +37,7 @@ public class Board {
 		firstSquare= new Square(0,0);
 		firstSquare.setxPosition(0);
 		firstSquare.setyPosition(0);
+		firstSquare.setPosition(1);
 		System.out.println("Se crea el first");
 		createRow(0,0, firstSquare);
 	}
@@ -45,15 +46,17 @@ public class Board {
 		System.out.println("Create row fila"+i);
 		createCol(i,j+1, first, first.getUp());
 		if(i+1<rows) {
-			Square currentDown=new Square(i+1,j);
-			currentDown.setxPosition(i+1);
-			currentDown.setyPosition(j);
-			currentDown.setUp(first);
-			first.setDown(currentDown);
-			createRow(i+1,j,currentDown);
+			Square currentUp=new Square(i+1,j);
+			currentUp.setxPosition(i+1);
+			currentUp.setyPosition(j);
+			currentUp.setPosition(order(j,i+1));
+			currentUp.setDown(first);
+			first.setUp(currentUp);
+			createRow(i+1,j,currentUp);
 		}
 		
 	}
+	
 	
 	private void createCol(int i, int j,Square first, Square prevRow) {
 		if(j<columns) {
@@ -61,13 +64,14 @@ public class Board {
 			Square current= new Square(i,j);
 			current.setxPosition(i);
 			current.setyPosition(j);
+			current.setPosition(order(j,i));
 			current.setPrev(first);
 			first.setNext(current);
 			
 			if(prevRow!=null) {
-				prevRow=prevRow.getNext();
-				current.setUp(prevRow);
-				prevRow.setDown(current);
+				Square temp=prevRow.getNext();
+				current.setUp(temp);
+				temp.setDown(current);
 				
 				
 			}
@@ -85,7 +89,7 @@ public class Board {
 		String msg="";
 		if(rowFirst!=null) {
 			msg= boardCol(rowFirst)+"\n";
-			msg+= boardRow(rowFirst.getDown());
+			msg+= boardRow(rowFirst.getUp());
 		}
 		return msg;
 	}
@@ -95,11 +99,23 @@ public class Board {
 		if(current!=null) {
 			msg= current.getInfo();
 			msg+=boardCol(current.getNext());
-			
 		}
 		return msg;
 	}
 	
+	public int order(int j,int i) {
+		int first = 0;
+		int change = 0;
+		if(i % 2 ==0) {
+			first = (columns*i);
+			change = 1;
+		}
+		else {
+			first = (columns*i)+(columns+1);
+			change = -1;
+		}
+		return first+((j+1)*change);
+	}
 	//Create and put the ladders
 	
 	private void setLadders(int ladders) {
@@ -119,7 +135,7 @@ public class Board {
 	}
 	//Method implemented by search a node with It´s coordinates x and y
 	public void setLowerLadder(int x, int y, Square firstSquare) {
-			
+
 			if((firstSquare.getXPosition()==x)&&(firstSquare.isOccupatedLadder()==false)) {
 				if(firstSquare.getYPosition()==y) {
 					firstSquare.setOcupatedLadder();
@@ -159,7 +175,8 @@ public class Board {
 	private void createPlayers(Player current, Player newPlayer) {
 		if(current.getNext() == null) {
 			current.setNext(newPlayer);
-		}else {
+		}
+		else {
 			current = current.getNext();
 			createPlayers(current,newPlayer);
 		}

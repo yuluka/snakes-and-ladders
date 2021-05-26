@@ -67,7 +67,7 @@ public class Menu {
 		System.out.println("Introduce the parameters of the game:"); //Recibe los parametros del juego que se va a crear.
 		String parameters = in.nextLine();
 		
-		String[] parametersArray = parameters.split(" ");//Guarada los parametros y crea un tablero.
+		String[] parametersArray = parameters.split(" ");//Guarda los parametros y crea un tablero.
 		int rows = Integer.parseInt(parametersArray[0]);
 		int columns = Integer.parseInt(parametersArray[1]);
 		int snakes = Integer.parseInt(parametersArray[2]);
@@ -82,7 +82,7 @@ public class Menu {
 		aux(amountPlayers, players);
 	}
 	
-	public void aux(int p, String[] players) {//Metodo recursivo hecho para crear los jugadores.
+	public void aux(int p, String[] players){//Metodo recursivo hecho para crear los jugadores.
 		//Recibe el numero de jugadores a crear, al que le resta 1 cada vez que se crea un jugador.
 		if(p == 0) {//Cuando se hayan creado todos los jugadores, pasa a jugar el juego.
 			play();

@@ -10,6 +10,7 @@ public class Square {
 	private int yPosition;
 	private int row;
 	private int column;
+	private int position;
 	
 	private boolean occupatedSnake; //Para validar si la casilla ya tiene una s o e.
 	private boolean occupatedLadder;
@@ -21,6 +22,7 @@ public class Square {
 		column=n;
 		xPosition=0;
 		yPosition=0;
+		position=0;
 		occupatedSnake=false;
 		occupatedLadder=false;
 		lower=false;
@@ -28,7 +30,7 @@ public class Square {
 		
 	}
 	public String getInfo() {
-		String info="[info]";
+		String info="["+position+"]";
 		return info;
 	}
 	
@@ -64,6 +66,10 @@ public class Square {
 
 	public int getYPosition() {
 		return yPosition;
+	}
+	
+	public int getPosition() {
+		return position;
 	}
 	
 	public boolean getUpperOrLower() {
@@ -126,5 +132,8 @@ public class Square {
 	public void setxPosition(int xPosition) {
 		this.xPosition = xPosition;
 	}
-
+	
+	public void setPosition(int p) {
+		position=p;
+	}
 }
