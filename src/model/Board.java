@@ -5,6 +5,8 @@ public class Board {
 	private int columns;//m columnas
 	private int snakes;//s serpientes
 	private int ladders;//e escaleras
+	private int random;
+	private char codes=(char)1;
 	private boolean direction;//Es la direccion en la que esta yendo un jugador. Puede ser izquierda o derecha
 	private Square firstSquare;//Es el primer cuadro del tablero
 	private Square top;
@@ -136,27 +138,27 @@ public class Board {
 	}
 	//Create and put the ladders
 	
-	private void setLadders(int ladders) {
-		int min=1;
-		
-	}
 	
-	public void setUpperLadder(Square low) {
-		
-	}
 	
 	//Set the lower ladder
-	public void setLowerLadder() {
+	public boolean setLadder() {
 		int number=getRandomNumber();
 		int number2=getRandomNumberUpper(number);
-		if(near(findSquare(number,top), occupated)){
-			setLowerLadder();	
+		if(near(findSquare(number,top), occupated)&&(near(findSquare(number2,top), occupated))){
+			setLadder();	
 		}
 		else {
+		
 			findSquare(number,top).setOcupatedLadder();
 			findSquare(number,top).setTrueLower();
+			findSquare(number,top).setLadder(findSquare(number2,top));
+			findSquare(number,top).setCode(""+codes);
+			findSquare(number2,top).setLadder(findSquare(number,top));
+			findSquare(number2,top).setOcupatedLadder();
+			findSquare(number2,top).setTrueUpper();
+			return true;
 		}
-	
+		return false;
 	}
 	//It's used for take a look at the right and left position of the square, noticing if there are a snake or a ladder next to the local Square
 	public boolean near(Square a, Occupated o) {
@@ -222,7 +224,6 @@ public class Board {
 		random=place(random);
 		return random;
 	}
-	
 	
 	
 	public int getNextNumber(int start) {
