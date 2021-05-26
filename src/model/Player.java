@@ -7,11 +7,14 @@ import java.util.Random;
 public class Player {
 	private String symbol;
 	private int movements;
-	//private int turn;
+	private int position;
+	private boolean turn;
 	
 	private Player next;
 	
 	public Player(String symbol) {
+		position = 1;
+		turn = true;
 		this.symbol = symbol;
 	}
 	
@@ -31,11 +34,32 @@ public class Player {
 		return next;
 	}
 	
+	public void setPosition(int position) {
+		this.position = position;
+	}
+	
+	public int getPosition() {
+		return position;
+	}
+	
+	public void setTurn(boolean turn) {
+		this.turn = turn;
+	}
+	
+	public boolean getTurn() {
+		return turn;
+	}
+	
 	public int launchDice() {
 		Random r = new Random();
 		
-		movements = r.nextInt(6)+1;
+		movements = r.nextInt(5)+1;
+		turn = false;
 		
 		return movements;
+	}
+	
+	public void upgratePosition() {
+		position += movements;
 	}
 }

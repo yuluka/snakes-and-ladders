@@ -20,6 +20,12 @@ public class Square {
 	private boolean occupated;
 	private boolean lower;
 	private boolean upper;
+
+	//private int code;
+	
+	private Player players;
+	private String playersSymbols;
+
 	public Square(int m, int n) {
 		row=m;
 		column=n;
@@ -62,9 +68,11 @@ public class Square {
 		return (char) ('A'+column);
 	}
 	
+
 	public String getCode() {
 		return code;
 	}
+
 
 	public int getId() {
 		return id;
@@ -184,5 +192,42 @@ public class Square {
 	
 	public void setCode(String code) {
 		this.code=code;
+	}
+	
+	public void setPlayerSymbol() {
+		if(players == null) {
+			playersSymbols = "";
+			
+		}else {
+			setPlayerSymbol(players);
+		}
+	}
+	
+	private void setPlayerSymbol(Player current) {
+		if(current.getNext() != null) {
+			playersSymbols = current.getSymbol();
+			setPlayerSymbol(current.getNext());
+		}else {
+			playersSymbols += "";
+		}
+	}
+	
+	public void setPlayer(Player players) {
+		if(players == null) {
+			this.players = players;
+		}else {
+			players = players.getNext();
+			setPlayer(players);
+		}
+	}
+	
+	public void removePlayer(String symbol) {
+		if(players.getSymbol().equalsIgnoreCase(symbol)) {
+			players = players.getNext();
+			
+		}else {
+			players = players.getNext();
+			removePlayer(symbol);
+		}
 	}
 }

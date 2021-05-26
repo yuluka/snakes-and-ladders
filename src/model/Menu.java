@@ -25,7 +25,7 @@ public class Menu {
 	}
 	
 	public void menu() {
-		System.out.println("What do you want to do:");
+		System.out.println("\nWhat do you want to do?");
 		System.out.println("1) Play.\n2) See positions.\n3) Exit.");
 		
 		selection = Integer.parseInt(in.nextLine());
@@ -44,15 +44,52 @@ public class Menu {
 			break;
 			
 		default:
-			System.out.println("Your selection is not available. Try again!.");
+			System.out.println("\nYour selection is not available. Try again!.");
 			menu();
 			break;
 		}
 	}
 	
 	public void play() {
-		System.out.println("The game begins.");
+		System.out.println("\nType a line break to launch the dice.");
 		
+		String aux = in.nextLine();
+		
+		if(!aux.equalsIgnoreCase("")) {
+			if(aux.equalsIgnoreCase("num")) {
+				System.out.println("\nShowing the first board.");
+				showFirstBoard();
+				
+			}else if(aux.equalsIgnoreCase("simul")) {
+				System.out.println("\nStarting the simulation mode.");
+				
+			}else if(aux.equalsIgnoreCase("menu")) {
+				System.out.println("\nGoing to main menu.");
+				menu();
+				
+			}else {
+				System.out.println("\nYour selection is invalid.");
+				play();
+				
+			}
+		}else {
+			b.movePlayer();
+			play();
+		}
+	}
+	
+	public void showFirstBoard() {
+		System.out.println(b.getBoard());
+		System.out.println("\nType a line break to continue with the game.");
+		
+		String aux = in.nextLine();
+		
+		if(aux.equalsIgnoreCase("")) {
+			play();
+		}else {
+			System.out.println("\nIllegal expression. Try again!");
+			showFirstBoard();
+		}
 	}
 	
 	public void getPositions() {
@@ -76,26 +113,28 @@ public class Menu {
 		b = new Board(rows,columns,snakes,ladders);
 		
 		String[] players = parametersArray[4].split("");
-		int amountPlayers = players.length;//Determina el numero de jugadores mirando la cantidad de simbolos que 
-											//escribio el usuario.
 		
-		aux(amountPlayers, players);
+		aux(players);
 	}
 	
-	public void aux(int p, String[] players){//Metodo recursivo hecho para crear los jugadores.
-		//Recibe el numero de jugadores a crear, al que le resta 1 cada vez que se crea un jugador.
-		if(p == 0) {//Cuando se hayan creado todos los jugadores, pasa a jugar el juego.
+	public void aux(String[] players){//Metodo recursivo hecho para crear los jugadores.
+		int p = players.length;//Determina el numero de jugadores mirando la cantidad de simbolos que escribio el usuario.
+		
+		int i = 0;
+		if(i == p-1) {//Cuando se hayan creado todos los jugadores, pasa a jugar el juego.
+			System.out.println("The game begins.");
+			System.out.println(b.getBoard());
 			play();
-		}else {//Si no se han creado los jugadores, vuelve a ejecutar el metodo que crea un jugador.
-			String symbol = players[p-1];
-			createPlayer(symbol, p, players);
+		}else {//Si no se han creado todos los jugadores, vuelve a ejecutar el metodo que crea un jugador.
+			String symbol = players[i];
+			createPlayer(symbol, i, players);
 		}
 	}
 	
-	private void createPlayer(String symbol, int p, String[] players) {
+	private void createPlayer(String symbol, int i, String[] players) {
 		b.createPlayers(symbol);
-		p--;//Como se acaba de crear un player, le resta un a p.
-		aux(p,players);
+		i++;//Como se acaba de crear un player, le resta un a p.
+		aux(players);
 	}
 	
 	

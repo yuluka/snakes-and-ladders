@@ -279,6 +279,9 @@ public class Board {
 		else{
 			return verify(number,value.getNext());
 		}
+
+		getNode2(x,y,firstSquare.getDown());
+		return firstSquare;
 	}
 	
 	public void createPlayers(String symbol) {
@@ -302,5 +305,54 @@ public class Board {
 			createPlayers(current,newPlayer);
 		}
 	}
+	
+	
+	public void movePlayer() {
+		if(firstPlayer.getTurn()) {
+			firstPlayer.launchDice();
+		}else {
+			Player current = firstPlayer.getNext();
+			movePlayer(current);
+		}
+	}
+	
+	private void movePlayer(Player current) {
+		if(current.getTurn()) {
+			Square aux = findSquare(current.getPosition(), firstSquare);
+			aux.removePlayer(current.getSymbol());
+			
+			current.launchDice();
+			movePlayer(current);
+			
+		}else {
+			current = current.getNext();
+			movePlayer(current);
+		}
+	}
+	
+	public void movePlayerOnSquare(Player current) {
+		int position = current.getPosition();
+		
+		Square aux = findSquare(position,firstSquare);
+		
+		aux.setPlayer(current);
+		
+	}
+	
+	public Square findSquareYulu(int plPosition,Square currentSq) {		
+		if(currentSq.getPosition() == plPosition) {
+			return currentSq;
+		}else {
+			currentSq = currentSq.getNext();
+			return findSquareYulu(plPosition, currentSq);
+		}
+	}
+	
+	//Hacer que devuelva los players.
+	
+	public void getPlayers() {
+		
+	}
+	
 	
 }
