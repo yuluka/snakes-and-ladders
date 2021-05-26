@@ -8,7 +8,8 @@ public class Board {
 	private boolean direction;//Es la direccion en la que esta yendo un jugador. Puede ser izquierda o derecha
 	private Square firstSquare;//Es el primer cuadro del tablero
 	private Square top;
-	private Occupated occupated;
+	private Occupated occupated=new Occupated();
+	private Occupated lastOccupated=new Occupated();
 	private Player firstPlayer;//Son los jugadores del juego
 	
 	
@@ -32,12 +33,13 @@ public class Board {
 		this.columns = columns;
 		this.snakes = snakes;
 		this.ladders = ladders;
+		occupated.setValue(1);
+		lastOccupated.setValue(rows*columns);
 		createBoard();
 	}
 	
 	private void createBoard() {
 		//System.out.println("matriz");
-		occupated.setValue(1);
 		firstSquare= new Square(0,0);
 		firstSquare.setxPosition(0);
 		firstSquare.setyPosition(0);
