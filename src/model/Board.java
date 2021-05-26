@@ -138,44 +138,122 @@ public class Board {
 	
 	private void setLadders(int ladders) {
 		int min=1;
-		if((ladders)>=min) {
-		int random=(int)((int) 0 + (Math.random() * rows-1));  
-		int random2=(int)((int) 0 + (Math.random() * columns));
-		if((random==rows)&&random2==0) {
-			random2=1;
-		}
-		if((random==0)&&random2==columns) {
-			random2=columns-1;
-		}
-		
-		setLadders(ladders-1);
-		}
-	}
-	//Method implemented by search a node with It´s coordinates x and y
-	public void setLowerLadder(int x, int y, Square firstSquare) {
-
-			if((firstSquare.getXPosition()==x)&&(firstSquare.isOccupatedLadder()==false)) {
-				if(firstSquare.getYPosition()==y) {
-					firstSquare.setOcupatedLadder();
-					firstSquare.setTrueLower();
-				}
-				setLowerLadder(x,y,firstSquare.getNext());
-			}
-			setLowerLadder(x,y,firstSquare.getDown());
 		
 	}
 	
-	public Square getNode2(int x, int y, Square firstSquare) {
+	public void setUpperLadder(Square low) {
 		
-		if((firstSquare.getXPosition()==x)) {
-			if(firstSquare.getYPosition()==y) {
-				firstSquare.setOcupatedLadder();
-				return firstSquare;
-			}
-			getNode2(x,y,firstSquare.getNext());
+	}
+	
+	//Set the lower ladder
+	public void setLowerLadder() {
+		int number=getRandomNumber();
+		if(near(findSquare(number,top), occupated)){
+			setLowerLadder();	
 		}
-		getNode2(x,y,firstSquare.getDown());
-	return firstSquare;
+		else {
+			findSquare(number,top).setOcupatedLadder();
+			findSquare(number,top).setTrueLower();
+		}
+	
+	}
+	
+	public boolean near(Square a, Occupated o) {
+		if(o!=null) {
+		if(a.getPosition()-1==(o.getValue())||(a.getPosition()+1==(o.getValue()))) {
+			return true;
+		}
+		else if(near(a,o.getNext())){
+			 return true;
+		}
+		else {
+			return false;
+		}
+		}
+		else {
+			return false;
+		}
+	
+	}
+	
+	//Method implemented by search a node with It´s position
+	public Square findSquare(int number,Square sTop) {
+		if(sTop.getDown()==null) {
+			return find2(sTop,number);
+		}
+		else {
+			if(find2(sTop,number)!=null){
+				return find2(sTop,number);
+			}
+			else {
+				return findSquare(number,sTop.getDown());
+			}
+			
+		}
+	}
+
+
+	public Square find2(Square rTop,int number) {
+		if(rTop.getNext()==null) {
+			if(rTop.getPosition()==number) {
+				return rTop;
+			}
+			else {
+				return null;
+			}
+					
+		}
+		else {
+			if(rTop.getPosition()==number) {
+				return rTop;
+			}
+			else {
+				return find2(rTop.getNext(),number);
+			}
+		}
+	}
+	
+	
+	public int getRandomNumber() {
+		int min=1;
+		int random=0;
+		random=(int)(min + (Math.random() * (rows*columns)));
+		random=place(random);
+		return random;
+	}
+	
+	
+	//Choose the correct number to be placed
+	public int place(int number) {
+		if(!verify(number, occupated)) {
+			forbidden(number);
+			return number;
+		}
+		else {
+			number = (int)(1 + (Math.random() * (columns*rows)));
+			return place(number+1);
+		}	
+	}
+	
+	
+	//Save a value in the forbidden numbers
+	public void forbidden(int number) {
+		Occupated temp = new Occupated();
+		temp.setNext(occupated);
+		occupated = temp;
+	}
+	
+	//Verify if the number is located in the forbidden numbers
+	public boolean verify(int number,Occupated value) {
+		if(value==null) {
+			return false;
+		}
+		if(number == value.getValue()) {
+			return true;
+		}
+		else{
+			return verify(number,value.getNext());
+		}
 	}
 	
 	public void createPlayers(String symbol) {

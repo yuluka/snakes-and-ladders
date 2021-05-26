@@ -6,6 +6,8 @@ public class Square {
 	private Square prev;
 	private Square up;
 	private Square down;
+	private Square snake;
+	private Square ladder;
 	private int xPosition;
 	private int yPosition;
 	private int row;
@@ -14,9 +16,9 @@ public class Square {
 	
 	private boolean occupatedSnake; //Para validar si la casilla ya tiene una s o e.
 	private boolean occupatedLadder;
+	private boolean occupated;
 	private boolean lower;
 	private boolean upper;
-	private int code;
 	public Square(int m, int n) {
 		row=m;
 		column=n;
@@ -25,10 +27,17 @@ public class Square {
 		position=0;
 		occupatedSnake=false;
 		occupatedLadder=false;
+		if((occupatedSnake==true)||(occupatedLadder==true)) {
+			occupated=true;
+		}
+		else {
+			occupated=false;
+		}
 		lower=false;
 		upper=false;
 		
 	}
+	
 	public String getInfo() {
 		String info="";
 		if(position<=9) {
@@ -68,6 +77,14 @@ public class Square {
 	public Square getDown() {
 		return down;
 	}
+	
+	public Square getSnake() {
+		return snake;
+	}
+	
+	public Square getLadder() {
+		return ladder;
+	}
 
 	public int getXPosition() {
 		return xPosition;
@@ -97,7 +114,10 @@ public class Square {
 	public boolean isOccupatedLadder() {
 		return occupatedLadder;
 	}
-
+	
+	public boolean getOccupated() {
+		return occupated;
+	}
 	public void setTrueUpper() {
 		upper=true;
 	}
@@ -132,6 +152,14 @@ public class Square {
 	
 	public void setNext(Square next) {
 		this.next = next;
+	}
+	
+	public void setSnake(Square snake) {
+		this.snake=snake;
+	}
+	
+	public void setLadder(Square ladder) {
+		this.ladder=snake;
 	}
 	
 	public void setId(int id) {
