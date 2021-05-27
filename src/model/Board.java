@@ -7,7 +7,8 @@ public class Board {
 	private int snakes;//s serpientes
 	private int ladders;//e escaleras
 	private int random;
-	private char codes=(char)1;
+	private int counterS=65;
+	private char codes;
 	private int counter=1;
 	private boolean direction;//Es la direccion en la que esta yendo un jugador. Puede ser izquierda o derecha
 	private Square firstSquare;//Es el primer cuadro del tablero
@@ -52,6 +53,7 @@ public class Board {
 		createRow(0,0, firstSquare);
 		getTop(firstSquare);
 		putLadders(ladders);
+		putSnakes(snakes);
 		
 		
 	}
@@ -150,8 +152,49 @@ public class Board {
 		}
 		return first+((j+1)*change);
 	}
+	//Create and put the snakes
+	
+	
+	public void putSnakes(int amount) {
+		int snakes=0;
+		if(amount>snakes) {
+			
+			if(setSnakes(counterS)) {
+				counterS++;
+				putSnakes(amount-1);
+			}
+			else {
+				System.out.println("There was an error at the time of set the snakes");
+			}
+		}
+		else {
+			System.out.println("The snakes are setted");
+			
+		}
+	}
+	
+	private boolean setSnakes(int counterS) {
+		int tail=getRandomNumber();
+		int head=getRandomNumberUpper(tail);
+		if(head<tail) {
+			head=retry(tail, head);
+		}
+		codes=(char)counterS;
+		findSquare(tail,top).setOcupatedSnakes();
+		findSquare(tail,top).setTrueTail();
+		findSquare(tail,top).setCode(""+codes);
+		
+		findSquare(head,top).setOcupatedSnakes();
+		findSquare(head,top).setTrueHead();
+		findSquare(head,top).setSnake(findSquare(tail,top));
+		findSquare(head,top).setCode(""+codes);
+		return true;
+	}
+	//It´s Finished
 	//Create and put the ladders
 	
+
+
 	public void putLadders(int amount) {
 		int ladders=0;
 		if(amount>ladders) {
@@ -221,24 +264,6 @@ public class Board {
 		return retry(a,b);
 		
 	}
-	//It's used for take a look at the right and left position of the square, noticing if there are a snake or a ladder next to the local Square
-	public boolean near(Square a, Occupated o) {
-		if(o!=null) {
-		if(a.getPosition()-1==(o.getValue())||(a.getPosition()+1==(o.getValue()))) {
-			return true;
-		}
-		else if(near(a,o.getNext())){
-			 return true;
-		}
-		else {
-			return false;
-		}
-		}
-		else {
-			return false;
-		}
-	
-	}
 	
 	//Method implemented by search a node with It´s position
 	public Square findSquare(int number,Square sTop) {
@@ -279,23 +304,6 @@ public class Board {
 			}
 		}
 	}
-	//verify
-	/*public boolean verifyIf(int a, Occupated occupated) {
-		if(occupated!=null) {
-			System.out.println(occupated.getValue());
-			if(occupated.getValue()==a) {
-				return false;
-			}
-			else {
-				verifyIf(a,occupated.getNext());
-			}
-			return true;
-		}
-		else {
-			return true;
-		}
-	}*/
-	
 	
 		//Generate a random number for the ladders
 	public int getRandomNumberUpper(int limit) {
@@ -380,17 +388,6 @@ public class Board {
 		temp.setNext(occupated);
 		occupated=temp;
 	}
-	
-	/*public void setLastNext(Occupated a, Occupated b) {
-		
-		if(b.getNext()==null) {
-			//System.out.println("get in "+b.getValue()+" "+a.getValue());
-			b.setNext(a);
-		}
-		else {
-			setLastNext(b.getNext(), a);
-		}
-	}*/
 	
 	//Verify if the number is located in the forbidden numbers
 	public boolean verify(int number,Occupated value) {

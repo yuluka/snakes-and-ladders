@@ -20,6 +20,8 @@ public class Square {
 	private boolean occupated;
 	private boolean lower;
 	private boolean upper;
+	private boolean head;
+	private boolean tail;
 
 	//private int code;
 	
@@ -34,29 +36,39 @@ public class Square {
 		position=0;
 		occupatedSnake=false;
 		occupatedLadder=false;
+		occupated=false;
 		setPlayerSymbol();
+		lower=false;
+		upper=false;
+		code="";
+		head=false;
+		tail=false;
+		
+	}
+	
+	public String getInfo() {
+		String a="";
 		if((occupatedSnake==true)||(occupatedLadder==true)) {
 			occupated=true;
 		}
 		else {
 			occupated=false;
 		}
-		lower=false;
-		upper=false;
-		code="";
 		
-	}
-	
-	public String getInfo() {
-		String a="";
-		if(occupatedLadder==true) {
+		if(occupated==true) {
 			a=code;
 		}
 		if(upper==true) {
-			a+=" u";
+			a+=" U";
 		}
 		if(lower==true) {
-			a+=" l";
+			a+=" L";
+		}
+		if(head==true) {
+			a+=" H";
+		}
+		if(tail==true) {
+			a+=" T";
 		}
 		String info="";
 		if(position<=9) {
@@ -121,14 +133,26 @@ public class Square {
 		return position;
 	}
 	
-	public boolean getUpperOrLower() {
+	public boolean UpOrLow() {
 		if(upper=true) {
-			return upper;
+			return true;
+		}
+		else{
+			return false;
+			}
+		
+		}
+	public boolean HeadOrTail() {
+		if(head==true) {
+			return true;
 		}
 		else {
-			return lower;
+			return false;
 		}
 	}
+	
+	
+	
 	
 	public boolean isOccupatedSnakes() {
 		return occupatedSnake;
@@ -141,12 +165,26 @@ public class Square {
 	public boolean getOccupated() {
 		return occupated;
 	}
+	
+	public void setTrueHead() {
+		head=true;
+		occupated=true;
+	}
+	
+	public void setTrueTail() {
+		tail=true;
+		occupated=true;
+	}
+	
+	
 	public void setTrueUpper() {
 		upper=true;
+		occupated=true;
 	}
 	
 	public void setTrueLower() {
 		lower=true;
+		occupated=true;
 	}
 	
 	public void setyPosition(int yPosition) {
@@ -155,10 +193,12 @@ public class Square {
 
 	public void setOcupatedSnakes() {
 		occupatedSnake=true;
+		occupated=true;
 	}
 	
 	public void setOcupatedLadder() {
 		occupatedLadder=true;
+		occupated=true;
 	}
 	
 	public void setDown(Square down) {
