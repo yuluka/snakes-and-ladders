@@ -7,10 +7,9 @@ public class Main {
 		//a.menu();
 
 
-		Board a=new Board(6,6,2,6);
+		Board a=new Board(6,6,2,8);
 
 		/*Board a=new Board(6,6,2,2);
->>>>>>> Stashed changes
 		//Board a = new Board(20,5,1,1);*/
 		System.out.println(a.getBoard());
 		

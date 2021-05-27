@@ -53,7 +53,16 @@ public class Board {
 		getTop(firstSquare);
 		putLadders(ladders);
 		
+		
 	}
+	
+	public void getInfo(Occupated occupated) {
+		while((occupated!=null)){
+			System.out.println( occupated.getValue());
+			occupated=occupated.getNext();
+		}
+	}
+	
 	
 	private void createRow(int i, int j, Square first) {
 		//System.out.println("Create row fila"+i);
@@ -290,17 +299,20 @@ public class Board {
 	
 		//Generate a random number for the ladders
 	public int getRandomNumberUpper(int limit) {
-		int min=getNextNumber(limit);
+		int min=getNextNumber(limit)+1;
 		int random=0;
-		int size=(rows*columns)-1;
+		int size=(rows*columns);
 		random=(int) (Math.random()*(min-size)+size);
-		int temp=random;
+		int temp=min;
 		int a=0;
 		//System.out.println(random+"r");
 		random=place(random, temp, a);
 		if((limit==random)||(random<limit)) {
-			getRandomNumberUpper(limit);
+			System.out.println("Entron al random upper");
+		getRandomNumberUpper(limit);
+		
 		}
+		
 		return random;
 	}
 	
@@ -320,7 +332,7 @@ public class Board {
 	
 	//Get a random number for the ladders
 	public int getRandomNumber() {
-		int min=columns+1;
+		int min=columns*2;
 		int random=0;
 		int size=(columns*rows);
 		size=size-min;
@@ -345,9 +357,17 @@ public class Board {
 		}
 		else {
 			System.out.println(number+"NO ENTRO");
-			int size=(rows*columns)-1;
+			if(a==0) {
+				int size=(rows*columns)-1;
+				number=(int) (Math.random()*(temp-size)+size);
+				System.out.println(number+" ==0");
+			}
+			else if(a==1){
+				int size=(rows*columns)-(columns*2);
+				number =  (int) (Math.random()*(2-size)+size);
+				System.out.println(number+" ==1");
+			}
 			
-			number =  (int) (Math.random()*(2-size)+size);
 			System.out.println(number+" RANDOM");
 			return place(number, temp, a);
 		}	
