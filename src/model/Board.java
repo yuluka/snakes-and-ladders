@@ -223,8 +223,8 @@ public class Board {
 			number=retry(number2, number);
 		}
 		
-		System.out.println(number+"f");
-		System.out.println(number2+"l");
+		//System.out.println(number+"f");
+		//System.out.println(number2+"l");
 		
 			findSquare(number,top).setOcupatedLadder();
 			findSquare(number,top).setTrueLower();
@@ -316,7 +316,7 @@ public class Board {
 		//System.out.println(random+"r");
 		random=place(random, temp, a);
 		if((limit==random)||(random<limit)) {
-			System.out.println("Entron al random upper");
+			//System.out.println("Entron al random upper");
 		getRandomNumberUpper(limit);
 		
 		}
@@ -359,24 +359,24 @@ public class Board {
 	//Choose the correct number to be placed
 	public int place(int number, int temp, int a) {
 		if(!verify(number, occupated)) {
-			System.out.println(number+"ENTRO");
+		//	System.out.println(number+"ENTRO");
 			forbidden(number);
 			return number;
 		}
 		else {
-			System.out.println(number+"NO ENTRO");
+			//System.out.println(number+"NO ENTRO");
 			if(a==0) {
 				int size=(rows*columns)-1;
 				number=(int) (Math.random()*(temp-size)+size);
-				System.out.println(number+" ==0");
+				//System.out.println(number+" ==0");
 			}
 			else if(a==1){
 				int size=(rows*columns)-(columns*2);
 				number =  (int) (Math.random()*(2-size)+size);
-				System.out.println(number+" ==1");
+				//System.out.println(number+" ==1");
 			}
 			
-			System.out.println(number+" RANDOM");
+			//System.out.println(number+" RANDOM");
 			return place(number, temp, a);
 		}	
 	}
