@@ -5,8 +5,8 @@ private Occupated next;
 private Occupated last;
 private int value;
 
-	public Occupated() {
-		value=0;
+	public Occupated(int a) {
+		value=a;
 	}
 	
 	public void setNext(Occupated a) {

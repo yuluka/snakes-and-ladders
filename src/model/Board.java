@@ -12,8 +12,7 @@ public class Board {
 	private boolean direction;//Es la direccion en la que esta yendo un jugador. Puede ser izquierda o derecha
 	private Square firstSquare;//Es el primer cuadro del tablero
 	private Square top;
-	private Occupated occupated=new Occupated();
-	private Occupated lastOccupated=new Occupated();
+	private Occupated occupated;
 	private Player firstPlayer;//Son los jugadores del juego
 	
 	
@@ -37,9 +36,8 @@ public class Board {
 		this.columns = columns;
 		this.snakes = snakes;
 		this.ladders = ladders;
-		occupated.setValue(1);
-		occupated.setLast(lastOccupated);
-		lastOccupated.setValue(rows*columns);
+		occupated=new Occupated(1);
+		occupated.setNext(new Occupated(rows*columns));
 		createBoard();
 		
 	}
@@ -164,41 +162,55 @@ public class Board {
 	
 	//Set the lower ladder
 	public boolean setLadder(int counter) {
+		
 		int number=getRandomNumber();
-		System.out.println("useless");
+		//System.out.println("useless");
 		int number2=getRandomNumberUpper(number);
-		System.out.println(number);
-		System.out.println(number2);
-		if((findSquare(number,top).getOccupated()==true)&&((findSquare(number2,top).getOccupated()==true))){
-			
-			setLadder(counter);	
+		if(number2<number) {
+			//desOccupated(number2, occupated);
+			number=retry(number2, number);
 		}
-		else {
-			if(!(findSquare(number,top)==null)) {
+		
+		System.out.println(number+"f");
+		System.out.println(number2+"l");
+		
 			findSquare(number,top).setOcupatedLadder();
 			findSquare(number,top).setTrueLower();
 			findSquare(number,top).setLadder(findSquare(number2,top));
+			//findSquare(number,top).getLadder().setCode(""+counter);
 			findSquare(number,top).setCode(""+counter);
-			}
-			else {
-				setLadder(counter);
-			}
 			
-			if(!(findSquare(number2,top)==null)) {
-			findSquare(number2,top).setLadder(findSquare(number,top));
 			findSquare(number2,top).setOcupatedLadder();
 			findSquare(number2,top).setTrueUpper();
 			findSquare(number2,top).setCode(""+counter);
-			}
 			
-			else {
-				setLadder(counter);
-			}
 			return true;
 			
-			
 		}
-		return false;
+	
+	/*public boolean desOccupated(int a, Occupated occupated) {
+		Occupated b=new Occupated(0);
+		if(occupated.getValue()==a) {
+			b.setNext(occupated.getNext());
+			occupated=b;
+			return true;
+		}
+		else {
+			return desOccupated(a, occupated.getNext());
+		}
+	}*/
+		
+	public int retry (int a, int b) {
+		//desOccupated(a, occupated);
+		a=getRandomNumberUpper(b);
+		if(a<b) {
+			retry(a,b);
+		}
+		else {
+			return a;
+		}
+		return retry(a,b);
+		
 	}
 	//It's used for take a look at the right and left position of the square, noticing if there are a snake or a ladder next to the local Square
 	public boolean near(Square a, Occupated o) {
@@ -221,12 +233,6 @@ public class Board {
 	
 	//Method implemented by search a node with It´s position
 	public Square findSquare(int number,Square sTop) {
-		if(sTop!=null) {
-			//System.out.println("no"+number);
-		}
-		else {
-			//System.out.println("sí"+number);
-		}
 		
 		if(sTop.getDown()==null){
 			return find2(sTop,number);
@@ -244,15 +250,11 @@ public class Board {
 
 // IN this method you search a square by using It´s position
 	public Square find2(Square rTop,int number) {
-		if(rTop!=null) {
-			//System.out.println("No2"+number);
-		}
-		else {
-			//System.out.println("sí"+number);
-		}
+		
 		if(rTop.getNext()==null) {
-			if((rTop.getPosition()==number)&&(rTop.getOccupated()==false)) {
+			if((rTop.getPosition()==number)) {
 				return rTop;
+				
 			}
 			else {
 				return null;
@@ -260,7 +262,7 @@ public class Board {
 					
 		}
 		else {
-			if(rTop.getPosition()==number) {
+			if((rTop.getPosition()==number)) {
 				return rTop;
 			}
 			else {
@@ -269,14 +271,34 @@ public class Board {
 		}
 	}
 	//verify
+	/*public boolean verifyIf(int a, Occupated occupated) {
+		if(occupated!=null) {
+			System.out.println(occupated.getValue());
+			if(occupated.getValue()==a) {
+				return false;
+			}
+			else {
+				verifyIf(a,occupated.getNext());
+			}
+			return true;
+		}
+		else {
+			return true;
+		}
+	}*/
+	
+	
 		//Generate a random number for the ladders
 	public int getRandomNumberUpper(int limit) {
 		int min=getNextNumber(limit);
 		int random=0;
 		int size=(rows*columns)-1;
 		random=(int) (Math.random()*(min-size)+size);
-		random=place(random);
-		if(limit==random) {
+		int temp=random;
+		int a=0;
+		//System.out.println(random+"r");
+		random=place(random, temp, a);
+		if((limit==random)||(random<limit)) {
 			getRandomNumberUpper(limit);
 		}
 		return random;
@@ -303,51 +325,61 @@ public class Board {
 		int size=(columns*rows);
 		size=size-min;
 		random=(int)(Math.random()*(2-size)+size);
-		if(random<((columns*rows)-(columns*2))){
+		//System.out.println(random+"r1");
+		if(random>((columns*rows)-(columns*2))){
 			getRandomNumber();
 		}
-		random=place(random);
+		int a=1;
+		int temp=random;
+		random=place(random,temp, a);
 		return random;
 	}
 	
 	
 	//Choose the correct number to be placed
-	public int place(int number) {
+	public int place(int number, int temp, int a) {
 		if(!verify(number, occupated)) {
+			System.out.println(number+"ENTRO");
 			forbidden(number);
 			return number;
 		}
 		else {
+			System.out.println(number+"NO ENTRO");
 			int size=(rows*columns)-1;
+			
 			number =  (int) (Math.random()*(2-size)+size);
-			return place(number);
+			System.out.println(number+" RANDOM");
+			return place(number, temp, a);
 		}	
 	}
 	
 	
 	//Save a value in the forbidden numbers
 	public void forbidden(int number) {
-		Occupated temp = new Occupated();
-		temp.setValue(number);
-		setLastNext(temp,occupated);
-		
+		Occupated temp = new Occupated(number);
+		temp.setNext(occupated);
+		occupated=temp;
 	}
 	
-	public void setLastNext(Occupated a, Occupated b) {
-		if(a.getNext()==null) {
-			a.setNext(b);
+	/*public void setLastNext(Occupated a, Occupated b) {
+		
+		if(b.getNext()==null) {
+			//System.out.println("get in "+b.getValue()+" "+a.getValue());
+			b.setNext(a);
 		}
 		else {
-			setLastNext(a.getNext(), b);
+			setLastNext(b.getNext(), a);
 		}
-	}
+	}*/
 	
 	//Verify if the number is located in the forbidden numbers
 	public boolean verify(int number,Occupated value) {
 		if(value==null) {
+			//System.out.println("False1");
 			return false;
 		}
-		if(number == value.getValue()) {
+		else if(number == value.getValue()) {
+			//System.out.println("True1");
 			return true;
 		}
 		else{
