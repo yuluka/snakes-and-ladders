@@ -3,12 +3,16 @@ import model.*;
 
 public class Main {
 	public static void main(String[] args) {
-		/*Menu a = new Menu();
-		a.menu();*/
+		Menu a = new Menu();
+		a.menu();
 
+<<<<<<< Updated upstream
 		Board a=new Board(6,6,2,6);
+=======
+		/*Board a=new Board(6,6,2,2);
+>>>>>>> Stashed changes
 		//Board a = new Board(20,5,1,1);
-		System.out.println(a.getBoard());
+		System.out.println(a.getBoard());*/
 		
 		
 	}

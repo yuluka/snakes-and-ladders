@@ -34,6 +34,7 @@ public class Square {
 		position=0;
 		occupatedSnake=false;
 		occupatedLadder=false;
+		setPlayerSymbol();
 		if((occupatedSnake==true)||(occupatedLadder==true)) {
 			occupated=true;
 		}
@@ -59,13 +60,13 @@ public class Square {
 		}
 		String info="";
 		if(position<=9) {
-			info="["+position+a+"   "+"]";
+			info="["+position+a+"   "+ playersSymbols +"]";
 		}
 		else if(position<=99){
-			info="["+position+a+"  "+"]";
+			info="["+position+a+"  "+ playersSymbols +"]";
 		}
 		else {
-			info="["+position+a+" "+"]";
+			info="["+position+a+" "+ playersSymbols +"]";
 		}
 		return info;
 	}

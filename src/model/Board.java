@@ -429,5 +429,18 @@ public class Board {
 		
 	}
 	
-	
+	public void setPlayers(String playersSymbols) {
+		if(playersSymbols.length() == 1) {
+			if(firstPlayer == null) {
+				firstPlayer = new Player(playersSymbols);
+			}else {
+				Player newP = new Player(playersSymbols);
+				firstPlayer.add(newP);
+			}
+		}else {
+			String nextSymbol = String.valueOf(playersSymbols.charAt(0));
+			setPlayers(nextSymbol);
+			setPlayers(playersSymbols.substring(1,playersSymbols.length()));
+		}
+	}
 }

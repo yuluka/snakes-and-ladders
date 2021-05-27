@@ -92,7 +92,7 @@ public class Menu {
 		}
 	}
 	
-	//public void getPosit|ions() {
+	//public void getPositions() {
 		
 	//}
 	
@@ -112,30 +112,10 @@ public class Menu {
 		
 		b = new Board(rows,columns,snakes,ladders);
 		
-		String[] players = parametersArray[4].split("");
+		b.setPlayers(parametersArray[4]);
 		
-		aux(players);
+		System.out.println("The game begins.");
+		System.out.println(b.getBoard());
+		play();
 	}
-	
-	public void aux(String[] players){//Metodo recursivo hecho para crear los jugadores.
-		int p = players.length;//Determina el numero de jugadores mirando la cantidad de simbolos que escribio el usuario.
-		
-		int i = 0;
-		if(i == p-1) {//Cuando se hayan creado todos los jugadores, pasa a jugar el juego.
-			System.out.println("The game begins.");
-			System.out.println(b.getBoard());
-			play();
-		}else {//Si no se han creado todos los jugadores, vuelve a ejecutar el metodo que crea un jugador.
-			String symbol = players[i];
-			createPlayer(symbol, i, players);
-		}
-	}
-	
-	private void createPlayer(String symbol, int i, String[] players) {
-		b.createPlayers(symbol);
-		i++;//Como se acaba de crear un player, le resta un a p.
-		aux(players);
-	}
-	
-	
 }

@@ -62,4 +62,12 @@ public class Player {
 	public void upgratePosition() {
 		position += movements;
 	}
+	
+	public void add(Player newPlayer) {
+		if(next == null) {
+			next = newPlayer;
+		}else {
+			next.add(newPlayer);
+		}
+	}
 }
