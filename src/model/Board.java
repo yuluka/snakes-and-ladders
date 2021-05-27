@@ -1,4 +1,5 @@
 package model;
+import java.lang.System;
 
 public class Board {
 	private int rows; //n filas
@@ -7,6 +8,7 @@ public class Board {
 	private int ladders;//e escaleras
 	private int random;
 	private char codes=(char)1;
+	private int counter=1;
 	private boolean direction;//Es la direccion en la que esta yendo un jugador. Puede ser izquierda o derecha
 	private Square firstSquare;//Es el primer cuadro del tablero
 	private Square top;
@@ -38,6 +40,7 @@ public class Board {
 		occupated.setValue(1);
 		lastOccupated.setValue(rows*columns);
 		createBoard();
+		
 	}
 	
 	private void createBoard() {
@@ -48,6 +51,9 @@ public class Board {
 		firstSquare.setPosition(1);
 		//System.out.println("Se crea el first");
 		createRow(0,0, firstSquare);
+		getTop(firstSquare);
+		putLadders(ladders);
+		
 	}
 	
 	private void createRow(int i, int j, Square first) {
@@ -138,24 +144,44 @@ public class Board {
 	}
 	//Create and put the ladders
 	
-	
+	public void putLadders(int amount) {
+		int ladders=0;
+		if(amount>ladders) {
+			if(setLadder(counter)) {
+				counter++;
+				putLadders(amount-1);
+			}
+			else {
+				System.out.println("There was an error at the time of create ladders");
+				System.out.println("Verify if the amount of ladders is correctly");
+			}
+		}
+		else {
+			System.out.println("The ladders are setted");
+		}
+	}
 	
 	//Set the lower ladder
-	public boolean setLadder() {
+	public boolean setLadder(int counter) {
 		int number=getRandomNumber();
 		int number2=getRandomNumberUpper(number);
-		if(near(findSquare(number,top), occupated)&&(near(findSquare(number2,top), occupated))){
-			setLadder();	
+		System.out.println(number);
+		System.out.println(number2);
+		if((findSquare(number,top).getOccupated()==true)&&((findSquare(number2,top).getOccupated()==true))){
+			
+			setLadder(counter);	
 		}
 		else {
 		
 			findSquare(number,top).setOcupatedLadder();
 			findSquare(number,top).setTrueLower();
 			findSquare(number,top).setLadder(findSquare(number2,top));
-			findSquare(number,top).setCode(""+codes);
+			findSquare(number,top).setCode(""+counter);
+	
 			findSquare(number2,top).setLadder(findSquare(number,top));
 			findSquare(number2,top).setOcupatedLadder();
 			findSquare(number2,top).setTrueUpper();
+			findSquare(number2,top).setCode(""+counter);
 			return true;
 		}
 		return false;
@@ -181,7 +207,14 @@ public class Board {
 	
 	//Method implemented by search a node with It´s position
 	public Square findSquare(int number,Square sTop) {
-		if(sTop.getDown()==null) {
+		if(sTop!=null) {
+			//System.out.println("no"+number);
+		}
+		else {
+			//System.out.println("sí"+number);
+		}
+		
+		if(sTop.getDown()==null){
 			return find2(sTop,number);
 		}
 		else {
@@ -197,6 +230,12 @@ public class Board {
 
 // IN this method you search a square by using It´s position
 	public Square find2(Square rTop,int number) {
+		if(rTop!=null) {
+			//System.out.println("No2"+number);
+		}
+		else {
+			//System.out.println("sí"+number);
+		}
 		if(rTop.getNext()==null) {
 			if(rTop.getPosition()==number) {
 				return rTop;
@@ -218,14 +257,16 @@ public class Board {
 	
 	//Generate a random number for the ladders
 	public int getRandomNumberUpper(int limit) {
+		int temp=1;
 		int min=getNextNumber(limit);
 		int random=0;
-		random=(int)(min + (Math.random() * (rows*columns)));
+		int size=(rows*columns);
+		random=(int) (Math.random()*(min-size)+size);
 		random=place(random);
 		return random;
 	}
 	
-	
+	//Get the correct position on the board to put the upper ladder
 	public int getNextNumber(int start) {
 		int number=(findSquare(start,top).getXPosition());
 		int temp=0;
@@ -239,10 +280,11 @@ public class Board {
 		}
 	}
 	
+	//Get a random number for the ladders
 	public int getRandomNumber() {
 		int min=2;
 		int random=0;
-		random=(int)(min + (Math.random() * ((rows*columns)-columns-1)));
+		random=(int)(min + (Math.random() * ((columns*rows)-(columns-1))));
 		random=place(random);
 		return random;
 	}
@@ -279,10 +321,11 @@ public class Board {
 		else{
 			return verify(number,value.getNext());
 		}
-
-		getNode2(x,y,firstSquare.getDown());
-		return firstSquare;
 	}
+
+		/*public Square getNode2(x,y,firstSquare.getDown());
+		return firstSquare;
+	}*/
 	
 	public void createPlayers(String symbol) {
 		// Los simbolos que se pueden usar son: * ! O X % $ # + &.

@@ -36,7 +36,7 @@ public class Menu {
 			break;
 		
 		case 2:
-			getPositions();
+			//getPositions();
 			break;
 			
 		case 3:
@@ -92,9 +92,9 @@ public class Menu {
 		}
 	}
 	
-	public void getPositions() {
+	//public void getPosit|ions() {
 		
-	}
+	//}
 	
 	public void exit() {
 		System.out.println("Bye!\n:-)");

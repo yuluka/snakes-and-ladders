@@ -5,11 +5,9 @@ public class Main {
 	public static void main(String[] args) {
 		/*Menu a = new Menu();
 		a.menu();*/
-<<<<<<< Updated upstream
-		Board a=new Board(5,5,1,1);
-=======
-		Board a = new Board(20,5,1,1);
->>>>>>> Stashed changes
+
+		Board a=new Board(6,6,2,2);
+		//Board a = new Board(20,5,1,1);
 		System.out.println(a.getBoard());
 		
 		

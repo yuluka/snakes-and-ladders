@@ -49,17 +49,23 @@ public class Square {
 	public String getInfo() {
 		String a="";
 		if(occupatedLadder==true) {
-			
+			a=code;
+		}
+		if(upper==true) {
+			a+=" u";
+		}
+		if(lower==true) {
+			a+=" l";
 		}
 		String info="";
 		if(position<=9) {
-			info="["+position+"   "+"]";
+			info="["+position+a+"   "+"]";
 		}
 		else if(position<=99){
-			info="["+position+"  "+"]";
+			info="["+position+a+"  "+"]";
 		}
 		else {
-			info="["+position+" "+"]";
+			info="["+position+a+" "+"]";
 		}
 		return info;
 	}
