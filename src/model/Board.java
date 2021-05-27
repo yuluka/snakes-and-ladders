@@ -38,6 +38,7 @@ public class Board {
 		this.snakes = snakes;
 		this.ladders = ladders;
 		occupated.setValue(1);
+		occupated.setLast(lastOccupated);
 		lastOccupated.setValue(rows*columns);
 		createBoard();
 		
@@ -173,17 +174,29 @@ public class Board {
 			setLadder(counter);	
 		}
 		else {
-		
+			if(!(findSquare(number,top)==null)) {
 			findSquare(number,top).setOcupatedLadder();
 			findSquare(number,top).setTrueLower();
 			findSquare(number,top).setLadder(findSquare(number2,top));
 			findSquare(number,top).setCode(""+counter);
-	
+			}
+			else {
+				setLadder(counter);
+			}
+			
+			if(!(findSquare(number2,top)==null)) {
 			findSquare(number2,top).setLadder(findSquare(number,top));
 			findSquare(number2,top).setOcupatedLadder();
 			findSquare(number2,top).setTrueUpper();
 			findSquare(number2,top).setCode(""+counter);
+			}
+			
+			else {
+				setLadder(counter);
+			}
 			return true;
+			
+			
 		}
 		return false;
 	}
@@ -238,7 +251,7 @@ public class Board {
 			//System.out.println("sí"+number);
 		}
 		if(rTop.getNext()==null) {
-			if(rTop.getPosition()==number) {
+			if((rTop.getPosition()==number)&&(rTop.getOccupated()==false)) {
 				return rTop;
 			}
 			else {
@@ -255,15 +268,17 @@ public class Board {
 			}
 		}
 	}
-	
-	//Generate a random number for the ladders
+	//verify
+		//Generate a random number for the ladders
 	public int getRandomNumberUpper(int limit) {
-		int temp=1;
 		int min=getNextNumber(limit);
 		int random=0;
-		int size=(rows*columns);
+		int size=(rows*columns)-1;
 		random=(int) (Math.random()*(min-size)+size);
 		random=place(random);
+		if(limit==random) {
+			getRandomNumberUpper(limit);
+		}
 		return random;
 	}
 	
@@ -283,9 +298,14 @@ public class Board {
 	
 	//Get a random number for the ladders
 	public int getRandomNumber() {
-		int min=2;
+		int min=columns+1;
 		int random=0;
-		random=(int)(min + (Math.random() * ((columns*rows)-(columns-1))));
+		int size=(columns*rows);
+		size=size-min;
+		random=(int)(Math.random()*(2-size)+size);
+		if(random<((columns*rows)-(columns*2))){
+			getRandomNumber();
+		}
 		random=place(random);
 		return random;
 	}
@@ -298,8 +318,9 @@ public class Board {
 			return number;
 		}
 		else {
-			number = (int)(1 + (Math.random() * (columns*rows)));
-			return place(number+1);
+			int size=(rows*columns)-1;
+			number =  (int) (Math.random()*(2-size)+size);
+			return place(number);
 		}	
 	}
 	
@@ -307,8 +328,18 @@ public class Board {
 	//Save a value in the forbidden numbers
 	public void forbidden(int number) {
 		Occupated temp = new Occupated();
-		temp.setNext(occupated);
-		occupated = temp;
+		temp.setValue(number);
+		setLastNext(temp,occupated);
+		
+	}
+	
+	public void setLastNext(Occupated a, Occupated b) {
+		if(a.getNext()==null) {
+			a.setNext(b);
+		}
+		else {
+			setLastNext(a.getNext(), b);
+		}
 	}
 	
 	//Verify if the number is located in the forbidden numbers

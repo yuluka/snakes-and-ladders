@@ -2,6 +2,7 @@ package model;
 
 public class Occupated {
 private Occupated next;
+private Occupated last;
 private int value;
 
 	public Occupated() {
@@ -16,8 +17,16 @@ private int value;
 		value=a;
 	}
 	
+	public void setLast(Occupated a) {
+		last=a;
+	}
+	
 	public Occupated getNext() {
 		return next;
+	}
+	
+	public Occupated getLast() {
+		return last;
 	}
 	
 	public int getValue() {
