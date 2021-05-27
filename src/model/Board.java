@@ -164,7 +164,6 @@ public class Board {
 	//Set the lower ladder
 	public boolean setLadder(int counter) {
 		int number=getRandomNumber();
-		System.out.println("useless");
 		int number2=getRandomNumberUpper(number);
 		System.out.println(number);
 		System.out.println(number2);
