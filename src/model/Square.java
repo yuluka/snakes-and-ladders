@@ -15,7 +15,7 @@ public class Square {
 	private int position;
 	private String code;
 	
-	private boolean occupatedSnake; //Para validar si la casilla ya tiene una s o e.
+	private boolean occupatedSnake;
 	private boolean occupatedLadder;
 	private boolean occupated;
 	private boolean lower;
@@ -46,6 +46,32 @@ public class Square {
 		
 	}
 	
+	public String getInfo2(){
+		String a="";
+		if((occupatedSnake==true)||(occupatedLadder==true)) {
+			occupated=true;
+		}
+		else {
+			occupated=false;
+		}
+		
+		if(occupated==true) {
+			a=code;
+		}
+		
+		String info="";
+		if(position<=9) {
+			info="["+a+"   "+ playersSymbols +"]";
+		}
+		else if(position<=99){
+			info="["+a+"  "+ playersSymbols +"]";
+		}
+		else {
+			info="["+a+" "+ playersSymbols +"]";
+		}
+		return info;
+	}
+	
 	public String getInfo() {
 		String a="";
 		if((occupatedSnake==true)||(occupatedLadder==true)) {
@@ -58,18 +84,7 @@ public class Square {
 		if(occupated==true) {
 			a=code;
 		}
-		if(upper==true) {
-			a+=" U";
-		}
-		if(lower==true) {
-			a+=" L";
-		}
-		if(head==true) {
-			a+=" H";
-		}
-		if(tail==true) {
-			a+=" T";
-		}
+		
 		String info="";
 		if(position<=9) {
 			info="["+position+a+"   "+ playersSymbols +"]";
