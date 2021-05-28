@@ -61,13 +61,14 @@ public class Menu {
 				
 			}
 		}else {
+			//System.out.println(b.getBoard());
 			b.movePlayer();
 			play();
 		}
 	}
 	
 	public void showFirstBoard() {
-		System.out.println(b.getBoard());
+		System.out.println(b.getBoard("a"));
 		System.out.println("\nType a line break to continue with the game.");
 		
 		String aux = in.nextLine();
@@ -104,7 +105,7 @@ public class Menu {
 		b.getFirstPlayer().setTurn(true);
 		
 		System.out.println("The game begins.");
-		System.out.println(b.getBoard());
+		System.out.println(b.getBoard("a"));
 		System.out.println(b.getPlayersSq());
 		System.out.println("The players are: " + b.getPlayersB());
 		play();

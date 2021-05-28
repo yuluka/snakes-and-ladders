@@ -102,30 +102,37 @@ public class Board {
 		}
 	}
 	
-	public String getBoard() {
+	public String getBoard(String aux) {
 		String msg;
 		getTop(firstSquare);
-		msg= boardRow(top);
+		msg= boardRow(top,aux);
 		return msg;
 	}
 	
 	
-	public String boardRow(Square topS) {
+	public String boardRow(Square topS,String aux) {
 		String msg="";
 		if(topS!=null) {
-			msg= boardCol(topS)+"\n";
-			msg+= boardRow(topS.getDown());
-			boardRow(topS.getDown());
+			msg= boardCol(topS, aux)+"\n";
+			msg+= boardRow(topS.getDown(),aux);
+			boardRow(topS.getDown(),aux);
 		}
 		return msg;
 	}
 
-	private String boardCol(Square current) {
+	private String boardCol(Square current, String aux) {
 		String msg="";
-		if(current!=null) {
-			msg= current.getInfo();
-			msg+=boardCol(current.getNext());
+		
+		if(aux.equals("")) {
+			if(current!=null) {
+				msg= current.getInfo2();
+				msg+=boardCol(current.getNext(),aux);
+			}
+		}else if(aux.equals("a")){
+			msg = current.getInfo();
+			msg+=boardCol(current.getNext(),aux);
 		}
+		
 		return msg;
 	}
 	
