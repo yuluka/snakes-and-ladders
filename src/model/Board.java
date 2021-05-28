@@ -404,63 +404,23 @@ public class Board {
 		}
 	}
 
-		/*public Square getNode2(x,y,firstSquare.getDown());
-		return firstSquare;
-	}*/
-	
-	public void createPlayers(String symbol) {
-		// Los simbolos que se pueden usar son: * ! O X % $ # + &.
-		
-		Player newPlayer = new Player(symbol);
-		
-		if(firstPlayer == null) {
-			firstPlayer = newPlayer;
-		}else {
-			createPlayers(firstPlayer,newPlayer);
-		}
-	}
-	
-	private void createPlayers(Player current, Player newPlayer) {
-		if(current.getNext() == null) {
-			current.setNext(newPlayer);
-		}
-		else {
-			current = current.getNext();
-			createPlayers(current,newPlayer);
-		}
-	}
-	
-	
 	public void movePlayer() {
 		if(firstPlayer.getTurn()) {
 			firstPlayer.launchDice();
 		}else {
-			Player current = firstPlayer.getNext();
-			movePlayer(current);
+			movePlayer(firstPlayer.getNext());
 		}
 	}
 	
 	private void movePlayer(Player current) {
 		if(current.getTurn()) {
-			Square aux = findSquare(current.getPosition(), firstSquare);
-			aux.removePlayer(current.getSymbol());
-			
+			searchSquare(current.getPosition()).removePlayer(current.getSymbol());
 			current.launchDice();
-			movePlayer(current);
+			setPlayerPosition(current);
 			
 		}else {
-			current = current.getNext();
-			movePlayer(current);
+			movePlayer(current.getNext());
 		}
-	}
-	
-	public void movePlayerOnSquare(Player current) {
-		int position = current.getPosition();
-		
-		Square aux = findSquare(position,firstSquare);
-		
-		aux.setPlayer(current);
-		
 	}
 	
 	public Square findSquareYulu(int plPosition,Square currentSq) {		
@@ -472,24 +432,71 @@ public class Board {
 		}
 	}
 	
-	//Hacer que devuelva los players.
-	
-	public void getPlayers() {
-		
+	public Player getFirstPlayer() {
+		return firstPlayer;
 	}
 	
-	public void setPlayers(String playersSymbols) {
-		if(playersSymbols.length() == 1) {
+	public void setPlayers(String playersSymbols) {//Recibe los symbols que el usuario digito en el menu
+		if(playersSymbols.length() == 1) {//Si solo escribio un simbolo, crea un solo player
 			if(firstPlayer == null) {
 				firstPlayer = new Player(playersSymbols);
+				setPlayerPosition(firstPlayer);
 			}else {
 				Player newP = new Player(playersSymbols);
 				firstPlayer.add(newP);
+				setPlayerPosition(newP);
 			}
-		}else {
+		}else {//Si el usuario escribio mas de un symbol, se va pasando uno por uno a si mismo, y quita el que ya paso.
 			String nextSymbol = String.valueOf(playersSymbols.charAt(0));
 			setPlayers(nextSymbol);
 			setPlayers(playersSymbols.substring(1,playersSymbols.length()));
 		}
+	}
+	
+	public void setPlayerPosition(Player p) {
+		int pPosition = p.getPosition();
+		searchSquare(pPosition).addPlayer(p);		
+	}
+	
+	public Square searchSquare(int position) {
+		if(firstSquare.getPosition() == position) {
+			return firstSquare;
+		}else {
+			return searchSquare(firstSquare.getNext(),position);
+		}
+	}
+	
+	private Square searchSquare(Square sq, int position) {
+		if(sq.getPosition() == position) {
+			return sq;
+		}else {
+			return searchSquare(sq.getNext(),position);
+		}
+	}
+	
+	public String getPlayersSq() {
+		String playersSq = "";
+		
+		playersSq = "Players in first square: " + firstSquare.getPlayersS();
+		
+		return playersSq;
+	}
+	
+	public String getPlayersB() {//Borrar antes de entregar
+		String playersB = "";
+		
+		Player current = firstPlayer;
+		
+		if(firstPlayer == null) {
+			playersB = "No players in existance";
+		}else {			
+			while(current != null) {
+				playersB += current.getSymbol();
+				
+				current = current.getNext();
+			}
+		}
+		
+		return playersB;
 	}
 }
