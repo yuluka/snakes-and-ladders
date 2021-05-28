@@ -132,11 +132,10 @@ public class Board {
 				msg+=boardCol(current.getNext(),aux);
 			}
 		}
-		else {
-			
-		}
 		return msg;
-	}
+		}
+		
+		
 	
 	public void getTop(Square firstSquare) {
 		if(firstSquare.getUp()==null) {
