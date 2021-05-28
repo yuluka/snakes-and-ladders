@@ -3,18 +3,6 @@ package model;
 import java.util.Scanner;
 
 public class Menu {
-	/** Menu:
-	 * 1) Jugar.
-	 * 2) Ver el tablero de posiciones.
-	 * 3) Salir del programa.
-	 */
-	
-	//Hacer metodo para ver la seleccion del 
-	//Hacer metodo para jugar.
-	//Hacer metodo para ver las posiciones.
-	//Hacer metodo para salir.
-	//Hacer metodo que lea la cadena que tiene el tamano, e, s y p.
-	
 	
 	private int selection;
 	private Scanner in = new Scanner(System.in);
@@ -73,13 +61,14 @@ public class Menu {
 				
 			}
 		}else {
+			//System.out.println(b.getBoard());
 			b.movePlayer();
 			play();
 		}
 	}
 	
 	public void showFirstBoard() {
-		System.out.println(b.getBoard());
+		System.out.println(b.getBoard("a"));
 		System.out.println("\nType a line break to continue with the game.");
 		
 		String aux = in.nextLine();
@@ -113,9 +102,12 @@ public class Menu {
 		b = new Board(rows,columns,snakes,ladders);
 		
 		b.setPlayers(parametersArray[4]);
+		b.getFirstPlayer().setTurn(true);
 		
 		System.out.println("The game begins.");
-		System.out.println(b.getBoard());
+		System.out.println(b.getBoard("a"));
+		System.out.println(b.getPlayersSq());
+		System.out.println("The players are: " + b.getPlayersB());
 		play();
 	}
 }

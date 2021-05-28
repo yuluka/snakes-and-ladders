@@ -14,7 +14,7 @@ public class Player {
 	
 	public Player(String symbol) {
 		position = 1;
-		turn = true;
+		turn = false;
 		this.symbol = symbol;
 	}
 	
@@ -50,13 +50,15 @@ public class Player {
 		return turn;
 	}
 	
-	public int launchDice() {
+	public void launchDice() {
 		Random r = new Random();
 		
 		movements = r.nextInt(5)+1;
-		turn = false;
 		
-		return movements;
+		position += movements;
+		
+		turn = false;
+		next.setTurn(true);
 	}
 	
 	public void upgratePosition() {

@@ -29,6 +29,7 @@ public class Square {
 	private String playersSymbols;
 
 	public Square(int m, int n) {
+		playersSymbols = "";
 		row=m;
 		column=n;
 		xPosition=0;
@@ -37,7 +38,14 @@ public class Square {
 		occupatedSnake=false;
 		occupatedLadder=false;
 		occupated=false;
-		setPlayerSymbol();
+		
+		if((occupatedSnake==true)||(occupatedLadder==true)) {
+			occupated=true;
+		}
+		else {
+			occupated=false;
+		}
+
 		lower=false;
 		upper=false;
 		code="";
@@ -256,31 +264,26 @@ public class Square {
 		this.code=code;
 	}
 	
-	public void setPlayerSymbol() {
+	public void addPlayer(Player newP) {
 		if(players == null) {
-			playersSymbols = "";
-			
+			players = newP;
+			playersSymbols += players.getSymbol();
 		}else {
-			setPlayerSymbol(players);
+			addPlayer(players.getNext(),newP);
 		}
 	}
 	
-	private void setPlayerSymbol(Player current) {
-		if(current.getNext() != null) {
-			playersSymbols = current.getSymbol();
-			setPlayerSymbol(current.getNext());
+	private void addPlayer(Player p, Player newP) {
+		if(p == null) {
+			p = newP;
+			playersSymbols += p.getSymbol();
 		}else {
-			playersSymbols += "";
+			addPlayer(p.getNext(),newP);
 		}
 	}
-	
-	public void setPlayer(Player players) {
-		if(players == null) {
-			this.players = players;
-		}else {
-			players = players.getNext();
-			setPlayer(players);
-		}
+
+	public String getPlayersS() {
+		return playersSymbols;
 	}
 	
 	public void removePlayer(String symbol) {
