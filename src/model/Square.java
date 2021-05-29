@@ -38,6 +38,10 @@ public class Square {
 		occupatedSnake=false;
 		occupatedLadder=false;
 		occupated=false;
+		head=false;
+		tail=false;
+		lower=false;
+		upper=false;
 		
 		if((occupatedSnake==true)||(occupatedLadder==true)) {
 			occupated=true;
@@ -66,16 +70,19 @@ public class Square {
 		if(occupated==true) {
 			a=code;
 		}
+		if(a=="") {
+			a="  ";
+		}
 		
 		String info="";
 		if(position<=9) {
 			info="["+a+"   "+ playersSymbols +"]";
 		}
 		else if(position<=99){
-			info="["+a+"  "+ playersSymbols +"]";
+			info="["+a+"   "+ playersSymbols +"]";
 		}
 		else {
-			info="["+a+" "+ playersSymbols +"]";
+			info="["+a+"   "+ playersSymbols +"]";
 		}
 		return info;
 	}
@@ -91,6 +98,9 @@ public class Square {
 		
 		if(occupated==true) {
 			a=code;
+		}
+		if(playersSymbols.equals("")) {
+			playersSymbols="  ";
 		}
 		
 		String info="";
@@ -157,7 +167,7 @@ public class Square {
 	}
 	
 	public boolean UpOrLow() {
-		if(upper=true) {
+		if(lower=true) {
 			return true;
 		}
 		else{
@@ -189,25 +199,38 @@ public class Square {
 		return occupated;
 	}
 	
+	public boolean getHead() {
+		return head;
+	}
+	
+	public boolean getTail() {
+		return tail;
+	}
+	
+	public boolean getLower() {
+		return lower;
+	}
+	
+	public boolean getUpper() {
+		return upper;
+	}
+	
 	public void setTrueHead() {
 		head=true;
-		occupated=true;
 	}
 	
 	public void setTrueTail() {
 		tail=true;
-		occupated=true;
+		
 	}
 	
 	
 	public void setTrueUpper() {
 		upper=true;
-		occupated=true;
 	}
 	
 	public void setTrueLower() {
 		lower=true;
-		occupated=true;
 	}
 	
 	public void setyPosition(int yPosition) {
@@ -245,7 +268,7 @@ public class Square {
 	}
 	
 	public void setLadder(Square ladder) {
-		this.ladder=snake;
+		this.ladder=ladder;
 	}
 	
 	public void setId(int id) {
@@ -264,10 +287,18 @@ public class Square {
 		this.code=code;
 	}
 	
+	public void addCharacter(String symbol) {
+		playersSymbols+=symbol;
+	}
+	
+	public void deleteCharacter(String symbol) {
+		playersSymbols=playersSymbols.replace(symbol,"");
+	}
+	
 	public void addPlayer(Player newP) {
 		if(players == null) {
 			players = newP;
-			playersSymbols += players.getSymbol();
+			//playersSymbols += players.getSymbol();
 		}else {
 			addPlayer(players.getNext(),newP);
 		}
@@ -276,23 +307,120 @@ public class Square {
 	private void addPlayer(Player p, Player newP) {
 		if(p == null) {
 			p = newP;
-			playersSymbols += p.getSymbol();
+			//playersSymbols += p.getSymbol();
 		}else {
 			addPlayer(p.getNext(),newP);
 		}
 	}
-
+	public void runPlayers() {
+		runPlayers(players);
+	}
+	private void runPlayers(Player players) {
+		if(players!=null) {
+		if(players.getNext()==null) {
+			playersSymbols+=players.getSymbol();
+		}
+		else {
+			playersSymbols+=players.getSymbol();
+			runPlayers(players.getNext());
+		}
+	}
+	}
 	public String getPlayersS() {
 		return playersSymbols;
 	}
 	
+	/*public void removePlayer() {
+		players=players.getNext();
+		playersSymbols="";
+		runPlayers();
+	}*/
+	
 	public void removePlayer(String symbol) {
 		if(players.getSymbol().equalsIgnoreCase(symbol)) {
 			players = players.getNext();
+			playersSymbols="";
+			runPlayers();
 			
 		}else {
 			players = players.getNext();
+			playersSymbols="";
+			runPlayers();
 			removePlayer(symbol);
 		}
 	}
+
+	public int getRow() {
+		return row;
+	}
+
+	public void setRow(int row) {
+		this.row = row;
+	}
+
+	public int getColumn() {
+		return column;
+	}
+
+	public void setColumn(int column) {
+		this.column = column;
+	}
+
+	public boolean isOccupatedSnake() {
+		return occupatedSnake;
+	}
+
+	public void setOccupatedSnake(boolean occupatedSnake) {
+		this.occupatedSnake = occupatedSnake;
+	}
+
+	public Player getPlayers() {
+		return players;
+	}
+
+	public void setPlayers(Player players) {
+		this.players = players;
+	}
+
+	public String getPlayersSymbols() {
+		return playersSymbols;
+	}
+
+	public void setPlayersSymbols(String playersSymbols) {
+		this.playersSymbols = playersSymbols;
+	}
+
+	public int getxPosition() {
+		return xPosition;
+	}
+
+	public int getyPosition() {
+		return yPosition;
+	}
+
+	public void setOccupatedLadder(boolean occupatedLadder) {
+		this.occupatedLadder = occupatedLadder;
+	}
+
+	public void setOccupated(boolean occupated) {
+		this.occupated = occupated;
+	}
+
+	public void setLower(boolean lower) {
+		this.lower = lower;
+	}
+
+	public void setUpper(boolean upper) {
+		this.upper = upper;
+	}
+
+	public void setHead(boolean head) {
+		this.head = head;
+	}
+
+	public void setTail(boolean tail) {
+		this.tail = tail;
+	}
+	
+	
 }
